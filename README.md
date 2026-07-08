@@ -1,42 +1,47 @@
-# 🌱 CarbonSmart Buildings
+````markdown
+# CarbonSmart Buildings 🌍💚
 
-A Hardhat-based smart contract project built for the Carbon Hackathon, featuring integration with LACNet blockchain network. This project demonstrates a programmable Green Carbon Token contract with gas relay functionality using the LacChain Gas Model Provider.
+**Green Carbon Token Smart Contracts for the Carbon Hackathon**
+
+A comprehensive blockchain solution for tracking and rewarding sustainable building practices through smart contracts on the LACNet network.
 
 ## 📋 Project Overview
 
-CarbonSmart Buildings provides a comprehensive solution for issuing and managing Green Carbon Tokens (GCT) based on verified energy savings in buildings.
+CarbonSmart Buildings is a decentralized platform that:
+- Issues **Green Carbon Tokens (GCT)** to buildings based on energy efficiency
+- Manages reward distribution through an **EnergyRewardManager**
+- Supports **gas relay** transactions for better UX
+- Integrates with **LACNet**, a sustainable blockchain network for Latin America
 
-### Key Features
+## 🏗️ Architecture
 
-- **CarbonSmartToken Contract**: ERC20-compatible token representing verified CO₂ reductions
-- **EnergyRewardManager Contract**: Issues tokens when IoT + AI verification confirms energy savings
-- **Gas Relay Integration**: Uses BaseRelayRecipient for meta-transactions and gas-free operations
-- **LACNet Integration**: Configured for deployment on LACNet hackathon network
-- **TypeScript Support**: Full TypeScript integration with Hardhat
-- **Modern Hardhat 3**: Uses the latest Hardhat features
+### Smart Contracts
 
-## 🏗️ Project Structure
+#### 1. **CarbonSmartToken** (`contracts/CarbonSmartToken.sol`)
+- ERC20 token implementation
+- Admin-controlled minting
+- Meta-transaction support (gas relay)
+- Manages GCT token supply and transfers
 
-```
-CarbonSmart-Buildings/
-├── contracts/
-│   ├── CarbonSmartToken.sol        # Green Carbon Token contract (ERC20)
-│   ├── EnergyRewardManager.sol     # Token issuance manager
-│   └── BaseRelayRecipient.sol      # Gas relay base contract
-├── scripts/
-│   └── deploy.js                   # LACNet deployment script
-├── docs/
-│   ├── deployment_guide.md         # Step-by-step deployment guide
-│   └── architecture.md             # Technical architecture overview
-├── hardhat.config.js               # Hardhat configuration
-├── package.json                    # Project dependencies
-├── .env.example                    # Environment variables template
-└── README.md                       # This file
-```
+#### 2. **EnergyRewardManager** (`contracts/EnergyRewardManager.sol`)
+- Issues rewards to buildings
+- Oracle-controlled reward distribution
+- Validates building addresses and amounts
+- Emits reward events for tracking
+
+#### 3. **BaseRelayRecipient** (`contracts/BaseRelayRecipient.sol`)
+- Gas relay recipient contract
+- Supports meta-transactions via trusted forwarder
+- Extracts actual sender from relay data
 
 ## 🚀 Quick Start
 
-### 1. Installation
+### Prerequisites
+- Node.js (v18+)
+- npm or yarn
+- Private key for deployment (set in `.env`)
+
+### Installation
 
 ```bash
 # Clone the repository
@@ -47,99 +52,167 @@ cd CarbonSmart-Buildings
 npm install
 ```
 
-### 2. Configuration
+### Environment Setup
 
 ```bash
-# Copy environment template
+# Copy example environment
 cp .env.example .env
 
-# Edit .env and add your PRIVATE_KEY
+# Edit .env and add your private key
 nano .env
 ```
 
-### 3. Compile Contracts
+### Compilation
 
 ```bash
 npm run compile
 ```
 
-### 4. Deploy to LACNet
+### Testing
 
+```bash
+npm run test
+```
+
+### Deployment
+
+**Local Hardhat Network:**
+```bash
+npm run local-deploy
+```
+
+**LACNet Network:**
 ```bash
 npm run deploy
 ```
 
-## 📡 Network Configuration
+## 📦 Project Structure
 
-The project is pre-configured for LACNet:
+```
+CarbonSmart-Buildings/
+├── contracts/
+│   ├── CarbonSmartToken.sol          # ERC20 token contract
+│   ├── EnergyRewardManager.sol       # Reward distribution manager
+│   └── BaseRelayRecipient.sol        # Gas relay support
+├── scripts/
+│   └── deploy.ts                     # Deployment script
+├── tests/
+│   ├── test_token.js                 # Token tests
+│   └── test_rewards.js               # Reward manager tests
+├── hardhat.config.ts                 # Hardhat configuration
+├── package.json                      # Project dependencies
+├── tsconfig.json                     # TypeScript configuration
+└── README.md                         # This file
+```
 
-| Network | RPC URL | Chain ID |
-|---------|---------|----------|
-| LACNet Hackathon | http://35.193.217.67 | TBD |
-| Local Hardhat | http://127.0.0.1:8545 | 1337 |
+## 🔧 Configuration
 
-## 💡 Smart Contracts
+### Hardhat Config (`hardhat.config.ts`)
+- **Solidity Version**: 0.8.28
+- **Optimizer**: Enabled (200 runs)
+- **Networks**: 
+  - Hardhat (local)
+  - LACNet (production)
+
+### Dependencies
+- `ethers`: ^6.15.0
+- `@lacchain/gas-model-provider`: ^1.2.1
+- `@nomicfoundation/hardhat-toolbox-mocha-ethers`: ^3.0.0
+- `@openzeppelin/contracts`: ^4.9.0
+
+## 📝 Contract Functions
 
 ### CarbonSmartToken
-- Standard ERC20 token for representing CO₂ reductions
-- Mintable by admin
-- Gas relay support for meta-transactions
+```solidity
+mint(address to, uint256 amount) - Mint tokens (admin only)
+setAdmin(address newAdmin) - Transfer admin role
+```
 
 ### EnergyRewardManager
-- Connects IoT sensor data via Oracle
-- Validates energy reduction against baseline
-- Calls CarbonSmartToken to mint Green Carbon Tokens
-- Ensures only authorized providers can issue rewards
+```solidity
+issueReward(address building, uint256 amount) - Issue reward (oracle only)
+setOracle(address newOracle) - Change oracle address
+```
 
-### BaseRelayRecipient
-- Enables gas-free meta-transactions
-- Uses trusted forwarder pattern
-- Compatible with LACNet Gas Model Provider
+## 🧪 Testing
 
-## 🔒 Security Considerations
+Run all tests:
+```bash
+npm run test
+```
 
-⚠️ **Important Security Notes:**
+Run specific test file:
+```bash
+npx hardhat test tests/test_token.js
+```
 
-- Never hardcode private keys in production
-- Use environment variables for sensitive data
-- Always audit contracts before mainnet deployment
-- For production, use hardware wallets or secure key management
-- Test thoroughly on testnet before mainnet deployment
+## 📊 Example Usage
+
+### Deploy Contracts
+```typescript
+const token = await Token.deploy(deployer.address);
+const manager = await Manager.deploy(token.address, oracle.address);
+```
+
+### Issue Rewards
+```typescript
+const rewardAmount = ethers.utils.parseEther("100");
+await manager.connect(oracle).issueReward(building.address, rewardAmount);
+```
+
+## 🌐 LACNet Integration
+
+### Network Details
+- **RPC Endpoint**: http://35.193.217.67
+- **Chain Type**: L1
+- **Gas Model**: LACChain gas relay support
+
+### Environment Variables
+```
+LACNET_RPC_URL=http://35.193.217.67
+PRIVATE_KEY=your_private_key_here
+```
+
+## 🔐 Security Considerations
+
+- ✅ Admin and Oracle role-based access control
+- ✅ Input validation for addresses and amounts
+- ✅ Gas relay support for improved UX
+- ✅ Event logging for all transactions
+- ⚠️ Contracts are for hackathon demonstration (not audited)
 
 ## 📚 Documentation
 
-- **[Deployment Guide](docs/deployment_guide.md)** - Step-by-step deployment instructions
-- **[Architecture Guide](docs/architecture.md)** - Technical architecture and data flows
-
-## 🛠️ Development
-
-### Available Scripts
-
-```bash
-npm run compile      # Compile smart contracts
-npm run deploy       # Deploy to LACNet
-npm run test         # Run tests
-npm run local-deploy # Deploy to local Hardhat network
-```
-
-## 📦 Technology Stack
-
-- **Hardhat 3 Beta** - Smart contract development framework
-- **Solidity 0.8.20** - Smart contract language
-- **OpenZeppelin Contracts** - Secure smart contract libraries
-- **Ethers.js v6** - Ethereum library
-- **Node.js** - JavaScript runtime
+- [LACNet Documentation](https://lacnet.com/docs)
+- [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts)
+- [Hardhat Documentation](https://hardhat.org/docs)
 
 ## 🤝 Contributing
 
-This is a hackathon project. Feel free to fork and experiment!
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Commit changes
+4. Push to the branch
+5. Open a Pull Request
 
 ## 📄 License
 
-MIT License – Knowledge generated is a public good, fostering positive externalities in the innovation ecosystem.
+MIT License - see LICENSE file for details
+
+## 👥 Authors
+
+- **Cristopher Venegas** - Initial implementation for Carbon Hackathon
+
+## 🙏 Acknowledgments
+
+- LACNet team for the sustainable blockchain infrastructure
+- OpenZeppelin for secure smart contract libraries
+- Hardhat team for excellent development tools
 
 ---
 
-**Built for the Carbon Hackathon 🌍**
+**Built for the Carbon Hackathon** ♻️🌱
 
-For questions or support, visit the [LACNet Documentation](https://lacnet.lacchain.net)
+For more information visit: [https://github.com/cristophervenegasn-sketch/CarbonSmart-Buildings](https://github.com/cristophervenegasn-sketch/CarbonSmart-Buildings)
+````
