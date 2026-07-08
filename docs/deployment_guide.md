@@ -1,4 +1,5 @@
 # CarbonSmart Buildings - Deployment Guide
+This guide explains how to install, configure, and deploy the CarbonSmart Buildings smart contracts and supporting modules on the LACNet blockchain network.
 
 ## Prerequisites
 - Node.js v16+ installed
