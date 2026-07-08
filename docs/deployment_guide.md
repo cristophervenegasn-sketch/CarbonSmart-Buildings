@@ -2,12 +2,18 @@
 This guide explains how to install, configure, and deploy the CarbonSmart Buildings smart contracts and supporting modules on the LACNet blockchain network.
 
 ## Prerequisites
-- Node.js v16+ installed
-- A wallet with LACNet test tokens
-- Private key of your deployer account
+- Node.js v16+
+- npm or yarn
+- Hardhat
+- Python 3.9+
+- Metamask configured for LACNet
+- Environment variables in `.env`
+
 
 ## Installation
-
+git clone https://github.com/cristophervenegasn-sketch/CarbonSmart-Buildings.git
+cd CarbonSmart-Buildings
+npm install
 1. Clone the repository:
 ```bash
 git clone https://github.com/cristophervenegasn-sketch/CarbonSmart-Buildings.git
