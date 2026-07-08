@@ -1,0 +1,27 @@
+{
+  "name": "carbonsmart-buildings",
+  "version": "1.0.0",
+  "description": "Smart contract project for the Carbon Hackathon - Green Carbon Token with LACNet integration",
+  "main": "hardhat.config.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js --network lacnet",
+    "test": "hardhat test",
+    "local-deploy": "hardhat run scripts/deploy.js --network hardhat"
+  },
+  "keywords": [
+    "blockchain",
+    "smart-contracts",
+    "carbon",
+    "lacnet",
+    "hardhat"
+  ],
+  "author": "Cristopher Venegas",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^4.9.0",
+    "hardhat": "^2.17.0",
+    "dotenv": "^16.3.1"
+  }
+}
